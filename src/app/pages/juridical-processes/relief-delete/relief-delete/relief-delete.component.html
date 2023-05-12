@@ -1,0 +1,84 @@
+<app-card [header]="true">
+  <div class="ch-content" header>
+    <h5 class="title">DESAHOGO &#45; Quitar Desahogo</h5>
+  </div>
+
+  <div body>
+    <form [formGroup]="form" class="container-fluid form-material">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-sm-12">
+          <div class="row">
+            <div class="col-12 mt-2 mb-2">
+              <form-field [control]="form.get('noVolante')">
+                <ngx-select
+                  type="number"
+                  [form]="form"
+                  control="noVolante"
+                  (change)="getWheel($event)"
+                  (fetchItems)="listWheels($event)"
+                  [data]="selectWheel"
+                  label="No&#46; Volante"
+                  value="wheelNumber"
+                  bindLabel="wheelNumber">
+                </ngx-select>
+              </form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 col-sm-12">
+          <div class="row">
+            <div class="col-12 mt-2 mb-2">
+              <form-field
+                [control]="form.get('noExpediente')"
+                label="No&#46; Expediente">
+                <input
+                  readonly
+                  class="form-control"
+                  formControlName="noExpediente" />
+              </form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-10 col-sm-12">
+          <div class="row">
+            <div class="col-12">
+              <form-field
+                [control]="form.get('cveDictamen')"
+                label="Clave Dictamen">
+                <input
+                  readonly
+                  class="form-control"
+                  formControlName="cveDictamen" />
+              </form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="row form-group justify-content-center">
+            <div class="col-lg-5 col-md-5 col-5 form-group">
+              <button
+                style="float: right"
+                type="button"
+                [disabled]="!form.valid || loading"
+                class="btn btn-primary active btn-sm"
+                (click)="btnBorrarDesahogo()">
+                Borrar Desahogo
+              </button>
+            </div>
+            <div class="col-lg-5 col-md-5 col-5 form-group">
+              <button
+                type="button"
+                class="btn btn-danger active btn-sm"
+                (click)="cleanForm()">
+                Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</app-card>

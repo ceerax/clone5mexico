@@ -1,0 +1,43 @@
+<app-card [header]="true">
+  <div class="ch-content" header>
+    <h5 *ngIf="!origin" class="title">PROCESO DE DISPERSI&Oacute;N DE PAGOS</h5>
+    <div class="row w-100" *ngIf="origin">
+      <div class="col-12 col-sm-12 col-md-8">
+        <h5 class="title">PROCESO DE DISPERSI&Oacute;N DE PAGOS</h5>
+      </div>
+      <div class="col-12 col-sm-12 col-md-4 text-end">
+        <button class="btn btn-primary active btn-sm" (click)="goBack()">
+          Regresar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div body>
+    <div
+      class="col-sm-12 col-12 col-md-12 col-lg-12 p-2 mb-5 p-5"
+      *ngIf="loading">
+      <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
+          <div class="loader"></div>
+          <h6 class="loader-msg pt-3">Cargando... por favor espere...</h6>
+        </div>
+      </div>
+    </div>
+    <!-- Forms DEPOSITARIA -->
+    <ng-container *ngIf="!loading">
+      <ngx-form-depositaria
+        [form]="form"
+        [formDepositario]="formDepositario"
+        [listDateOptions]="dataPagosRecibidos"
+        (formValues)="btnRunPayment($event)"
+        (searchGoodNumber)="btnSearchGood($event)"
+        (formDepositariaValues)="btnDepositaryRecharge($event)"
+        (formValuesValidacion)="btnValidacionPagos($event)"
+        (eliminarDispersionPagos)="btnDispersar($event)"
+        [nombrePantalla]="'concil-pag'"
+        [btnDeshacerParam]="'fechaEliminarDispersion'"></ngx-form-depositaria>
+    </ng-container>
+    <!-- Forms DEPOSITARIA -->
+  </div>
+</app-card>

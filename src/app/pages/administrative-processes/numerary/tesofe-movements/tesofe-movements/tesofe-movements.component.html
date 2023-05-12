@@ -1,0 +1,66 @@
+<app-card [header]="true" [footer]="true">
+  <div class="ch-content" header>
+    <h5 class="title">MOVIMIENTOS TESOFE</h5>
+    <div class="col-md-5 buttons">
+      <div>
+        <button
+          class="btn btn-primary active btn-sm ml-3"
+          (click)="loadModal()">
+          Nuevo
+        </button>
+      </div>
+    </div>
+  </div>
+  <div body>
+    <div class="row mt-3 mb-3">
+      <form action="" class="form-material" [formGroup]="form">
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <form-field [control]="form.get('cve_banco')" label="Banco">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="cve_banco"
+                (click)="openList()" />
+            </form-field>
+          </div>
+          <div class="col-md-8">
+            <form-field [control]="form.get('nombre')" label="Descripción">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="nombre" />
+            </form-field>
+          </div>
+          <div class="col-md-9">
+            <form-field [control]="form.get('cve_cuenta')" label="Cuenta">
+              <input formControlName="cve_cuenta" class="form-control" />
+            </form-field>
+          </div>
+          <div class="col-md-3">
+            <form-field [control]="form.get('desc_moneda')" label="Moneda">
+              <input formControlName="desc_moneda" class="form-control" />
+            </form-field>
+          </div>
+        </div>
+
+        <div class="row pt-4">
+          <div class="col-md-12">
+            <div [class]="loading ? 'table-loading' : ''">
+              <ng2-smart-table
+                [attr.class]="'table-bordered'"
+                [settings]="settings"
+                [source]="dataAcount.data"
+                (delete)="deleteQuestion($event.data)">
+              </ng2-smart-table>
+            </div>
+          </div>
+          <app-pagination
+            [filterParams]="filterParams"
+            [totalItems]="dataAcount.count">
+          </app-pagination>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-card>

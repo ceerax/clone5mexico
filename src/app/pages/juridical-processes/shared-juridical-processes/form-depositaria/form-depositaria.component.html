@@ -1,0 +1,186 @@
+<div class="row w-100">
+  <div class="col-sm-12 col-12 col-md-12 col-lg-12 p-2">
+    <form [formGroup]="form" class="container-fluid form-material">
+      <div class="card">
+        <form [formGroup]="form" class="container-fluid form-material p-0">
+          <div class="card-header text-dark">
+            <div class="col-12 col-sm-4 col-md-8 p-2">
+              Ejecutar la conciliacion de pagos recibidos
+            </div>
+            <div class="col-12 col-sm-8 col-md-4 p-2">
+              <form-field
+                class="col-sm-12 col-12 col-md-8 p-2"
+                [control]="form.get('noBien')"
+                label="No&#46; Bien">
+                <input class="form-control" formControlName="noBien" />
+              </form-field>
+              <div class="col-sm-12 col-12 col-md-4 p-2">
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm active"
+                  (click)="btnSearchGood()">
+                  Buscar
+                  <i aria-hidden="true" class="fa fa-search text-pink"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <form-field
+              class="col-sm-12 col-12 col-md-12 p-2"
+              [control]="form.get('descripcion')"
+              label="Descripci&oacute;n">
+              <textarea
+                rows="5"
+                [readonly]="true"
+                class="form-control"
+                formControlName="descripcion"></textarea>
+            </form-field>
+            <form-field
+              class="col-sm-12 col-12 col-md-8 p-2"
+              [control]="form.get('nombramiento')"
+              label="Nombramiento">
+              <input
+                class="form-control"
+                formControlName="nombramiento"
+                [readonly]="true" />
+            </form-field>
+            <form-field
+              class="col-sm-12 col-12 col-md-4 p-2"
+              [control]="form.get('fecha')"
+              label="Fecha">
+              <input
+                class="form-control"
+                formControlName="fecha"
+                bsDatapicker
+                [readonly]="true" />
+            </form-field>
+          </div>
+          <div class="card-footer">
+            <div class="col-sm-12 col-12 col-md-12 p-2 text-center">
+              <button
+                type="button"
+                class="btn btn-primary btn-sm active m-2"
+                (click)="btnEjecutar()">
+                Ejecutar Conciliaci&oacute;n de Pagos
+              </button>
+              <button
+                *ngIf="!deleteDateOption"
+                type="button"
+                class="btn btn-danger btn-sm active m-2"
+                (click)="btnDeshacer()">
+                Elimina Dispersi&oacute;n
+              </button>
+            </div>
+            <ng-container *ngIf="deleteDateOption">
+              <div class="col-12 col-sm-12 col-md-12 p-2 mb-4 text-center">
+                Seleccione la Fecha de la Dispersi&oacute;n a Eliminar
+              </div>
+              <form-field
+                class="col-sm-12 col-12 offset-md-4 col-md-4 p-2"
+                [control]="form.get('fechaEliminarDispersion')"
+                label="Fecha Dispersi&oacute;n">
+                <!-- <input
+                  class="form-control"
+                  formControlName="fechaEliminarDispersion"
+                  bsDatapicker /> -->
+                <select
+                  class="form-control"
+                  formControlName="fechaEliminarDispersion">
+                  <option value="">Seleccione una Fecha</option>
+                  <ng-container *ngFor="let optionDate of listDateOptions">
+                    <option [value]="optionDate.payIdGens">
+                      {{
+                        '#PAGO_DESTINO: ' + optionDate.payIdGens
+                      }}&nbsp;---&nbsp;{{
+                        '#PAGO_ORIGEN: ' + optionDate.payId
+                      }}&nbsp;---&nbsp;{{
+                        'MONTO:$ ' + formatTotalAmount(optionDate.payId)
+                      }}&nbsp;---&nbsp;FECHA:{{
+                        optionDate.processDate | date: 'dd/MM/yyyy'
+                      }}
+                    </option>
+                  </ng-container>
+                </select>
+              </form-field>
+              <div class="col-sm-12 col-12 col-md-12 p-2 text-center">
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm active m-2"
+                  (click)="btnDeleteDispersalPay()">
+                  Eliminar Dispersi&oacute;n de Pagos
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm active m-2"
+                  (click)="btnExit()">
+                  Cerrar
+                </button>
+              </div>
+            </ng-container>
+          </div>
+        </form>
+      </div>
+    </form>
+  </div>
+  <div class="col-sm-12 col-12 col-md-12 col-lg-12 p2">
+    <div class="card">
+      <form
+        [formGroup]="formDepositario"
+        class="container-fluid form-material p-0">
+        <div class="card-header text-dark">
+          <div class="col-12 col-sm-4 col-md-4 p-2">Depositario</div>
+          <form-field
+            class="col-sm-12 col-12 col-md-offset-4 col-md-4 p-2"
+            [control]="formDepositario.get('idDepositario')"
+            label="Id Depositario">
+            <input
+              class="form-control"
+              formControlName="idDepositario"
+              [readonly]="true" />
+          </form-field>
+        </div>
+        <div class="card-body">
+          <form-field
+            class="col-sm-12 col-12 col-md-6 p-2"
+            [control]="formDepositario.get('depositario')"
+            label="Depositario">
+            <input
+              class="form-control"
+              formControlName="depositario"
+              [readonly]="true" />
+          </form-field>
+          <form-field
+            class="col-sm-12 col-12 col-md-4 p-2"
+            [control]="formDepositario.get('fechaEjecucion')"
+            label="Fecha Ejecuci&oacute;n">
+            <input
+              class="form-control"
+              formControlName="fechaEjecucion"
+              bsDatapicker
+              [readonly]="true" />
+          </form-field>
+          <div class="col-sm-12 col-12 col-md-2 p-2">
+            <form-check label="Procesar" for="procesar">
+              <input id="procesar" type="checkbox" formControlName="procesar" />
+            </form-check>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="col-sm-12 col-12 col-md-12 p-2 text-center">
+            <button
+              class="btn btn-info btn-sm active text-wrap m-2"
+              (click)="btnRecargaDepositario()">
+              Recarga Depositario
+            </button>
+            <button
+              class="btn btn-primary btn-sm active text-wrap m-2"
+              (click)="btnValidacionPagos()">
+              Validaci&oacute;n de Pagos
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
