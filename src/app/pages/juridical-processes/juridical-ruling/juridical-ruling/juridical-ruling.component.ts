@@ -352,6 +352,7 @@ export class JuridicalRulingComponent
     this.selectedGooods = [];
     this.selectedGooodsValid = [];
     this.goodsValid = [];
+    this.data4 = [];
   }
 
   onLoadExpedientData() {
@@ -879,7 +880,7 @@ export class JuridicalRulingComponent
 
   async checkout1(object: object) {
     let response = await fetch(
-      'http://sigebimsqa.indep.gob.mx/dictation/api/v1/application/factjurdictamasDeleteDisctp1',
+      'http://sigebimsdev.indep.gob.mx/dictation/api/v1/application/factjurdictamasDeleteDisctp1',
       {
         headers: { 'content-type': 'application/json' },
         method: 'POST',
@@ -891,7 +892,7 @@ export class JuridicalRulingComponent
 
   async checkout2(object: object) {
     let response = await fetch(
-      'http://sigebimsqa.indep.gob.mx/dictation/api/v1/application/factjurdictamasDeleteDisctp2',
+      'http://sigebimsdev.indep.gob.mx/dictation/api/v1/application/factjurdictamasDeleteDisctp2',
       {
         headers: { 'content-type': 'application/json' },
         method: 'POST',
@@ -903,7 +904,7 @@ export class JuridicalRulingComponent
 
   async checkout3(object: object) {
     let response = await fetch(
-      'http://sigebimsqa.indep.gob.mx/dictation/api/v1/application/factjurdictamasDeleteDisctp3',
+      'http://sigebimsdev.indep.gob.mx/dictation/api/v1/application/factjurdictamasDeleteDisctp3',
       {
         headers: { 'content-type': 'application/json' },
         method: 'POST',
