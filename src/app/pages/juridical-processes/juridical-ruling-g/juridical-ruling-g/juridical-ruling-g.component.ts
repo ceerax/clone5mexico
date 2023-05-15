@@ -68,7 +68,6 @@ export class JuridicalRulingGComponent
   selectedDocuments: IDocuments[] = [];
   statusDict: string = undefined;
   dictNumber: string | number = undefined;
-  wheelNumber: string | number = undefined;
   delegationDictNumber: string | number = undefined;
   keyArmyNumber: string | number = undefined;
 
@@ -319,6 +318,7 @@ export class JuridicalRulingGComponent
    */
   prepareForm() {
     this.expedientesForm = this.fb.group({
+      noDictaminacion: [null, [Validators.required]],
       tipoDictaminacion: [null, [Validators.required]],
       noExpediente: [null, [Validators.required]],
       averiguacionPrevia: [null, [Validators.pattern(STRING_PATTERN)]],
@@ -328,8 +328,11 @@ export class JuridicalRulingGComponent
     });
 
     this.dictaminacionesForm = this.fb.group({
+      wheelNumber: [null],
       etiqueta: [null, [Validators.pattern(STRING_PATTERN)]],
+      fechaInstructora: [null],
       fechaResolucion: [null],
+      fechaDictaminacion: [null],
       fechaNotificacion: [null],
       fechaNotificacionAseg: [null],
       cveOficio: [null, [Validators.pattern(KEYGENERATION_PATTERN)]],
@@ -406,22 +409,37 @@ export class JuridicalRulingGComponent
     this.loadExpedientInfo(noExpediente).then(({ json }) => {
       json
         .then(res => {
-          debugger;
+          debugger; //FIXME: quitar antes de PR
           this.dictNumber = res.data[0].id;
-          this.wheelNumber = res.data[0].wheelNumber;
+          // this.wheelNumber = res.data[0].wheelNumber;
           this.delegationDictNumber = res.data[0].delegationDictNumber;
+          this.expedientesForm
+            .get('delito')
+            .setValue(res.data[0].esDelit || undefined);
           this.expedientesForm
             .get('tipoDictaminacion')
             .setValue(res.data[0].typeDict || undefined);
+          this.expedientesForm
+            .get('noDictaminacion')
+            .setValue(res.data[0].id || undefined);
           this.dictaminacionesForm
-            .get('fechaNotificacion')
-            .setValue(new Date(res.data[0].entryDate) || undefined);
+            .get('fechaInstructora')
+            .setValue(new Date(res.data[0]?.instructorDate) || undefined);
+          this.dictaminacionesForm
+            .get('wheelNumber')
+            .setValue(res.data[0].wheelNumber || undefined);
+          this.dictaminacionesForm
+            .get('fechaDictaminacion')
+            .setValue(new Date(res.data[0].dictDate) || undefined);
+          this.dictaminacionesForm
+            .get('fechaResolucion')
+            .setValue(new Date(res.data[0].dictHcDAte) || undefined);
           this.dictaminacionesForm
             .get('fechaNotificacionAseg')
             .setValue(new Date(res.data[0].entryHcDate) || undefined);
           this.dictaminacionesForm
-            .get('fechaResolucion')
-            .setValue(new Date(res.data[0].dictDate) || undefined);
+            .get('fechaNotificacion')
+            .setValue(new Date(res.data[0].entryDate) || undefined);
           this.expedientesForm
             .get('observaciones')
             .setValue(res.data[0].observations || undefined);
@@ -800,7 +818,7 @@ export class JuridicalRulingGComponent
       proceedingsNumber: this.expedientesForm.get('noExpediente').value,
       typeDicta: this.expedientesForm.get('tipoDictaminacion').value,
       numberOfDicta: this.dictNumber,
-      wheelNumber: this.wheelNumber,
+      wheelNumber: this.dictaminacionesForm.get('wheelNumber').value,
       user: token.preferred_username,
       delegationNumberDictam: this.delegationDictNumber,
       clueJobNavy: this.keyArmyNumber, // -- keyArmyNumber
