@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ModelForm } from 'src/app/core/interfaces/model-form';
-import { IDeductive } from 'src/app/core/models/catalogs/deductive.model';
 import { DeductiveService } from 'src/app/core/services/catalogs/deductive.service';
+import { DictationService } from 'src/app/core/services/ms-dictation/dictation.service';
 import { BasePage } from 'src/app/core/shared/base-page';
-import { DOUBLE_PATTERN, STRING_PATTERN } from 'src/app/core/shared/patterns';
 
 @Component({
   selector: 'app-edit-exp-noti',
@@ -13,14 +12,15 @@ import { DOUBLE_PATTERN, STRING_PATTERN } from 'src/app/core/shared/patterns';
   styles: [],
 })
 export class EditFormComponent extends BasePage implements OnInit {
-  deductiveForm: ModelForm<IDeductive>;
+  deductiveForm: ModelForm<any>;
   title: string = 'Dictaminación';
   edit: boolean = false;
-  deductive: IDeductive;
+  dict: any;
   constructor(
     private modalRef: BsModalRef,
     private fb: FormBuilder,
-    private deductiveService: DeductiveService
+    private deductiveService: DeductiveService,
+    private dictationServices: DictationService
   ) {
     super();
   }
@@ -32,37 +32,31 @@ export class EditFormComponent extends BasePage implements OnInit {
   private prepareForm() {
     this.deductiveForm = this.fb.group({
       id: [null],
-      serviceType: [
-        null,
-        [Validators.required, Validators.pattern(STRING_PATTERN)],
-      ],
-      weightedDeduction: [
-        null,
-        [Validators.required, Validators.pattern(DOUBLE_PATTERN)],
-      ],
-      startingRankPercentage: [
-        null,
-        [Validators.required, Validators.pattern(DOUBLE_PATTERN)],
-      ],
-      finalRankPercentage: [
-        null,
-        [Validators.required, Validators.pattern(DOUBLE_PATTERN)],
-      ],
-      contractNumber: [
-        null,
-        [Validators.required, Validators.pattern(DOUBLE_PATTERN)],
-      ],
-      version: [
-        null,
-        [Validators.required, Validators.pattern(DOUBLE_PATTERN)],
-      ],
+      expedientNumber: [null],
+      wheelNumber: [null, [Validators.required]],
+      observations: [null, [Validators.required]],
+      affairKey: [null, [Validators.required]],
+      captureDate: [null, [Validators.required]],
+      protectionKey: [null, [Validators.required]],
+      preliminaryInquiry: [null, [Validators.required]],
+      criminalCase: [null, [Validators.required]],
       status: [null, [Validators.required]],
     });
-    if (this.deductive != null) {
+    debugger;
+    if (this.dict != null) {
       this.edit = true;
-      this.deductiveForm.patchValue(this.deductive);
+      this.deductiveForm.patchValue(this.dict);
     }
   }
+
+  formatDate(date: string) {
+    return new Date(date);
+  }
+
+  loadDataNotification() {
+    // this.dictationServices.getById('')
+  }
+
   close() {
     this.modalRef.hide();
   }
@@ -82,7 +76,7 @@ export class EditFormComponent extends BasePage implements OnInit {
   update() {
     this.loading = true;
     this.deductiveService
-      .update(this.deductive.id, this.deductiveForm.value)
+      .update(this.dict.id, this.deductiveForm.value)
       .subscribe({
         next: data => this.handleSuccess(),
         error: error => (this.loading = false),

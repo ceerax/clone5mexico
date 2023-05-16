@@ -7,78 +7,67 @@
       <div class="row">
         <div class="col-md-4">
           <form-field
-            [control]="deductiveForm.get('serviceType')"
+            [control]="deductiveForm.get('wheelNumber')"
             label="No. Volante">
             <input
               type="text"
               class="form-control"
-              formControlName="serviceType" />
+              formControlName="wheelNumber" />
           </form-field>
         </div>
 
         <div class="col-md-8">
-          <form-field
-            [control]="deductiveForm.get('weightedDeduction')"
-            label="Asunto">
+          <form-field [control]="deductiveForm.get('affairKey')" label="Asunto">
             <input
-              type="number"
+              type="text"
               class="form-control"
-              formControlName="weightedDeduction" />
+              formControlName="affairKey" />
           </form-field>
         </div>
       </div>
       <div class="row pt-5">
         <div class="col-md-12 pb-5">
           <form-field
-            [control]="deductiveForm.get('startingRankPercentage')"
+            [control]="deductiveForm.get('observations')"
             label="Descripción">
             <input
-              type="number"
+              type="text"
               class="form-control"
-              formControlName="startingRankPercentage" />
+              formControlName="observations" />
           </form-field>
         </div>
         <div class="col-md-3">
           <form-field
-            [control]="deductiveForm.get('finalRankPercentage')"
+            [control]="deductiveForm.get('captureDate')"
             label="Fecha captura">
             <input
-              type="number"
               class="form-control"
-              formControlName="finalRankPercentage" />
+              formControlName="captureDate"
+              bsDatepicker />
           </form-field>
         </div>
 
         <div class="col-md-3">
           <form-field
-            [control]="deductiveForm.get('contractNumber')"
+            [control]="deductiveForm.get('protectionKey')"
             label="Clave Amparo">
-            <input
-              type="number"
-              class="form-control"
-              formControlName="contractNumber" />
+            <input class="form-control" formControlName="protectionKey" />
           </form-field>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-8">
           <form-field
-            [control]="deductiveForm.get('version')"
+            [control]="deductiveForm.get('preliminaryInquiry')"
             label="Averiguación Previa">
-            <input
-              type="number"
-              class="form-control"
-              formControlName="version" />
+            <input class="form-control" formControlName="preliminaryInquiry" />
           </form-field>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
           <form-field
-            [control]="deductiveForm.get('version')"
+            [control]="deductiveForm.get('criminalCase')"
             label="Causa Penal">
-            <input
-              type="number"
-              class="form-control"
-              formControlName="version" />
+            <input class="form-control" formControlName="criminalCase" />
           </form-field>
         </div>
       </div>
@@ -96,9 +85,12 @@
       <div class="row pt-5">
         <div class="col-md-3">
           <form-field
-            [control]="deductiveForm.get('id')"
+            [control]="deductiveForm.get('expedientNumber')"
             label="No. Expediente">
-            <input type="number" class="form-control" formControlName="id" />
+            <input
+              type="number"
+              class="form-control"
+              formControlName="expedientNumber" />
           </form-field>
         </div>
       </div>

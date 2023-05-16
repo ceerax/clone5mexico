@@ -38,7 +38,7 @@ export class NotificationFileUpdateComponent
     affairKey: {
       title: 'Asunto',
     },
-    description: {
+    observations: {
       title: 'Descripción',
     },
     captureDate: {
@@ -120,6 +120,7 @@ export class NotificationFileUpdateComponent
     param.addFilter('expedientNumber', this.form.get('noExpediente').value);
     this.notificationService.getAllFilter(param.getParams()).subscribe({
       next: data => {
+        debugger;
         this.dataFactGen = data.data;
         this.dataFactGen[0].description = data.data[0].departament.description;
         this.loading = false;
@@ -151,7 +152,6 @@ export class NotificationFileUpdateComponent
 
   openForm(dict?: any) {
     const modalConfig = MODAL_CONFIG;
-    debugger;
     modalConfig.initialState = {
       dict,
       callback: (next: boolean) => {
