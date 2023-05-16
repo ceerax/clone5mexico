@@ -1,7 +1,14 @@
 // FIXME: 2
 
 /** BASE IMPORT */
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -30,6 +37,7 @@ import { GoodTypeService } from 'src/app/core/services/catalogs/good-type.servic
 import { DocumentsService } from 'src/app/core/services/ms-documents/documents.service';
 import { ExpedientService } from 'src/app/core/services/ms-expedient/expedient.service';
 import { GoodService } from 'src/app/core/services/ms-good/good.service';
+import { ApplicationGoodsQueryService } from 'src/app/core/services/ms-goodsquery/application.service';
 import { BasePage } from 'src/app/core/shared/base-page';
 import {
   KEYGENERATION_PATTERN,
@@ -72,6 +80,7 @@ export class JuridicalRulingGComponent
   keyArmyNumber: string | number = undefined;
 
   idGoodSelected = 0;
+  @ViewChild('cveOficio', { static: true }) cveOficio: ElementRef;
 
   //tipos
   types = new DefaultSelect<Partial<IGoodType>>();
@@ -302,7 +311,8 @@ export class JuridicalRulingGComponent
     private readonly goodServices: GoodService,
     private readonly documentService: DocumentsService,
     private readonly expedientServices: ExpedientService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private applicationGoodsQueryService: ApplicationGoodsQueryService
   ) {
     super();
   }
@@ -491,15 +501,21 @@ export class JuridicalRulingGComponent
   }
 
   btnSalir() {
-    console.log('Salir');
-    this.listadoDocumentos = false;
     // --
     // Sube documentos seleccionados
     if (this.selectedDocuments.length > 0) {
+      this.listadoDocumentos = false;
       this.documents = this.documents.concat(this.selectedDocuments);
       this.selectedDocuments.forEach(doc => {
         this.goods = this.goods.filter(_doc => _doc.id != doc.id);
       });
+      this.selectedDocuments = [];
+    } else {
+      this.alert(
+        'info',
+        '',
+        'Debes seleccionar la fecha de un documento para continuar.'
+      );
     }
   }
   onGoodSelect(instance: CheckboxElementComponent) {
@@ -909,5 +925,47 @@ export class JuridicalRulingGComponent
       }
     );
     return { status: response.status, json: response.json() };
+  }
+
+  isDocsEmpty() {
+    return this.documents.length === 0;
+  }
+
+  btnApprove() {
+    let token = this.authService.decodeToken();
+    const pNumber = Number(token.department);
+    this.applicationGoodsQueryService.getDictamenSeq(pNumber).subscribe({
+      next: (response: any) => {
+        this.generateCveOficio(response.dictamenDelregSeq);
+        // document.getElementById('cveOficio').focus();
+        this.cveOficio.nativeElement.focus();
+        setTimeout(
+          () =>
+            this.alert(
+              'success',
+              '',
+              'Clave de oficio generada correctamente.'
+            ),
+          1000
+        );
+      },
+    });
+    window.location.replace(
+      baseMenu + baseMenuDepositaria + DEPOSITARY_ROUTES_2[0].link
+    );
+  }
+
+  generateCveOficio(noDictamen: string) {
+    let token = this.authService.decodeToken();
+    const year = new Date().getFullYear();
+    let cveOficio = '';
+    cveOficio =
+      token.siglasnivel1 + '/' + token.siglasnivel2 + '/' + token.siglasnivel3;
+    cveOficio = cveOficio + '/' + noDictamen + '/' + year;
+    this.dictaminacionesForm.get('cveOficio').setValue(cveOficio);
+  }
+
+  btnCloseDocs() {
+    this.listadoDocumentos = false;
   }
 }

@@ -288,8 +288,9 @@
       <div class="col-sm-12 col-12 col-md-4 p-2 text-center">
         <button
           class="btn btn-primary btn-sm active m-3 text-wrap"
-          (click)="btnAprobar()"
-          [routerLink]="rutaAprobado">
+          [disabled]="isDocsEmpty()"
+          (click)="btnApprove()">
+          <!-- [routerLink]="rutaAprobado" -->
           Aprobar
         </button>
         <button
@@ -349,10 +350,24 @@
           [settings]="settings4"
           [source]="data4"></ng2-smart-table>
       </div>
-      <div class="col-sm-12 col-12 col-md-12 text-right p-2">
+      <!-- <div class="col-sm-12 col-12 col-md-12 text-right p-2">
         <div class="form-group">
           <button class="btn btn-danger btn-sm active m-3" (click)="btnSalir()">
             Cerrar Ventana
+          </button>
+        </div>
+      </div> -->
+      <div class="col-12 flex p-2">
+        <div class="form-group text-right">
+          <button
+            class="btn btn-danger active btn-sm m-3"
+            (click)="btnCloseDocs()">
+            Cerrar Ventana
+          </button>
+          <button
+            class="btn btn-primary active btn-sm m-3"
+            (click)="btnSalir()">
+            Cargar documentos
           </button>
         </div>
       </div>
