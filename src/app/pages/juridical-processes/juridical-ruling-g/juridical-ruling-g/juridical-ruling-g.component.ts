@@ -403,6 +403,12 @@ export class JuridicalRulingGComponent
     let noExpediente = this.expedientesForm.get('noExpediente').value || '';
     this.expedientServices.getById(noExpediente).subscribe({
       next: response => {
+        // this.dictaminacionesForm
+        //   .get('autoriza_remitente')
+        //   .setValue(response.identifier);
+        this.dictaminacionesForm
+          .get('autoriza_nombre')
+          .setValue(response.indicatedName);
         // ..Datos del expediente
         this.expedientesForm.get('causaPenal').setValue(response.criminalCase);
         this.expedientesForm
@@ -433,6 +439,9 @@ export class JuridicalRulingGComponent
           this.expedientesForm
             .get('noDictaminacion')
             .setValue(res.data[0].id || undefined);
+          this.dictaminacionesForm
+            .get('cveOficio')
+            .setValue(res.data[0].passOfficeArmy || undefined);
           this.dictaminacionesForm
             .get('fechaInstructora')
             .setValue(new Date(res.data[0]?.instructorDate) || undefined);
