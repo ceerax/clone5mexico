@@ -168,10 +168,8 @@ export class JuridicalRulingGComponent
       },
     },
     rowClassFunction: (row: any) => {
-      console.log('ROW::', row);
-      row.data.status = 'MODIFICADO';
-      if (row.isSelected) {
-        return 'bg-success';
+      if (row.data.status === 'STI') {
+        return 'bg-secondary text-white';
       } else {
         return 'bg-success';
       }
@@ -605,6 +603,9 @@ export class JuridicalRulingGComponent
         if (!this.goodsValid.some(v => v === good)) {
           this.goodsValid = this.goodsValid.concat(this.selectedGooods);
           // this.goods = this.goods.filter(_good => _good.id != good.id);
+          let indexGood = this.goods.findIndex(_good => _good == good);
+          this.goods[indexGood].status = 'STI';
+          debugger;
         } else {
           // this.alert('error', '', 'El bien ya existe.');
         }
