@@ -167,8 +167,18 @@ export class JuridicalRulingGComponent
         type: 'string',
       },
     },
+    rowClassFunction: (row: any) => {
+      console.log('ROW::', row);
+      row.data.status = 'MODIFICADO';
+      if (row.isSelected) {
+        return 'bg-success';
+      } else {
+        return 'bg-success';
+      }
+    },
     noDataMessage: 'No se encontrarón registros',
   };
+  // TODO:
 
   settings2 = {
     pager: {
@@ -256,17 +266,6 @@ export class JuridicalRulingGComponent
     selectedRowIndex: -1,
     mode: 'external',
     columns: {
-      // checked: {
-      //   title: '',
-      //   sort: false,
-      //   type: 'custom',
-      //   showAlways: true,
-      //   valuePrepareFunction: (isSelected: boolean, row: IDocuments) =>
-      //     this.isDocumentSelectedValid(row),
-      //   renderComponent: CheckboxElementComponent,
-      //   onComponentInitFunction: (instance: CheckboxElementComponent) =>
-      //     this.onDocsSelectValid(instance),
-      // },
       id: {
         title: '#',
         type: 'number',
@@ -275,10 +274,6 @@ export class JuridicalRulingGComponent
         title: 'Documentos',
         type: 'string',
       },
-      // fecha: {
-      //   title: 'Fec. Recibido',
-      //   type: 'string',
-      // },
       fecha: {
         title: 'Fecha',
         sort: false,
@@ -606,9 +601,13 @@ export class JuridicalRulingGComponent
   }
   addSelect() {
     if (this.selectedGooods.length > 0) {
-      this.goodsValid = this.goodsValid.concat(this.selectedGooods);
       this.selectedGooods.forEach(good => {
-        this.goods = this.goods.filter(_good => _good.id != good.id);
+        if (!this.goodsValid.some(v => v === good)) {
+          this.goodsValid = this.goodsValid.concat(this.selectedGooods);
+          // this.goods = this.goods.filter(_good => _good.id != good.id);
+        } else {
+          // this.alert('error', '', 'El bien ya existe.');
+        }
       });
       this.selectedGooods = [];
     }
